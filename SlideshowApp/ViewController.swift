@@ -92,11 +92,15 @@ class ViewController: UIViewController {
         let resultViewController:ResultViewController = segue.destination as! ResultViewController
         resultViewController.image = imageArray[nowIndex]
         
-        timer.invalidate()
-        timer = nil
-        startButton.setTitle("再生", for: .normal)
-        backButton.isEnabled = true
-        nextBottun.isEnabled = true
+        
+        if timer != nil {
+            timer.invalidate()
+            timer = nil
+            startButton.setTitle("再生", for: .normal)
+            backButton.isEnabled = true
+            nextBottun.isEnabled = true
+        }
+        
         
     }
     //拡大画面から戻ってくる。
