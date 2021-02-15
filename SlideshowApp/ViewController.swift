@@ -19,47 +19,47 @@ class ViewController: UIViewController {
         UIImage(named: "IMG_5806.JPG")!,
         UIImage(named: "IMG_5807.JPG")!
     ]
-   
+    
     override func viewDidLoad() {
-      super.viewDidLoad()
-      // Do any additional setup after loading the view.
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
         imageView.image = imageArray[0]
         
     }
     
     // 配列に指定するindex番号を宣言
-       var nowIndex:Int = 0
-
-       // スライドショーに使用するタイマーを宣言
-       var timer: Timer!
-//再生
+    var nowIndex:Int = 0
+    
+    // スライドショーに使用するタイマーを宣言
+    var timer: Timer!
+    //再生
     @IBAction func slideShowButton(_ sender: Any) {
-   
-           // 再生中か停止しているかを判定
-           if timer == nil {
-               // 再生時の処理を実装
-
-               // タイマーをセットする
-               timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(changeImage), userInfo: nil, repeats: true)
-
-               // ボタンの名前を停止に変える
+        
+        // 再生中か停止しているかを判定
+        if timer == nil {
+            // 再生時の処理を実装
+            
+            // タイマーをセットする
+            timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(changeImage), userInfo: nil, repeats: true)
+            
+            // ボタンの名前を停止に変える
             startButton.setTitle("停止", for: .normal)
             backButton.isEnabled = false
             nextBottun.isEnabled = false
-
-           } else {
-               // 停止時の処理を実装
-               // タイマーを停止する
-               timer.invalidate()
-               // タイマーを削除しておく(timer.invalidateだけだとtimerがnilにならないため)
-               timer = nil
-               // ボタンの名前を再生に直しておく
+            
+        } else {
+            // 停止時の処理を実装
+            // タイマーを停止する
+            timer.invalidate()
+            // タイマーを削除しておく(timer.invalidateだけだとtimerがnilにならないため)
+            timer = nil
+            // ボタンの名前を再生に直しておく
             startButton.setTitle("再生", for: .normal)
             backButton.isEnabled = true
             nextBottun.isEnabled = true
-           }
-       }
-//進む
+        }
+    }
+    //進む
     @objc func changeImage() {
         nowIndex += 1
         if nowIndex == imageArray.count {
@@ -67,32 +67,39 @@ class ViewController: UIViewController {
         }
         imageView.image = imageArray[nowIndex]
     }
-//戻る
+    //戻る
     @objc func changeImage2() {
-            nowIndex -= 1
-            if nowIndex < 0 {
-                nowIndex = imageArray.count - 1
-            }
-            imageView.image = imageArray[nowIndex]
+        nowIndex -= 1
+        if nowIndex < 0 {
+            nowIndex = imageArray.count - 1
         }
-//進むボタン
+        imageView.image = imageArray[nowIndex]
+    }
+    //進むボタン
     @IBAction func nextPage(_ sender: Any) {
         changeImage()
     }
-//戻るボタン
+    //戻るボタン
     @IBAction func backPage(_ sender: Any) {
         changeImage2()
     }
-
+    
     
     
     //画像から拡大画像で表示する。
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            // segueから遷移先のResultViewControllerを取得する
-            let resultViewController:ResultViewController = segue.destination as! ResultViewController
-          resultViewController.image = imageArray[nowIndex]
-        }
-//拡大画面から戻ってくる。
+        // segueから遷移先のResultViewControllerを取得する
+        let resultViewController:ResultViewController = segue.destination as! ResultViewController
+        resultViewController.image = imageArray[nowIndex]
+        
+        timer.invalidate()
+        timer = nil
+        startButton.setTitle("再生", for: .normal)
+        backButton.isEnabled = true
+        nextBottun.isEnabled = true
+        
+    }
+    //拡大画面から戻ってくる。
     @IBAction func unwind(_ segue: UIStoryboardSegue) {
-        }
+    }
 }
